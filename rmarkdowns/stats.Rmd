@@ -29,6 +29,7 @@ library(ggpubr)
 library(janitor)
 library(ggcorrplot)
 library(vembedr)
+library(plotly)
 ```
 
 
@@ -220,3 +221,31 @@ ggplot(sdr_data, aes(x = goal_12_score,
       - are there any points that don't follow the trend (outliers)
         
         - which country(s) are outliers?
+        
+
+```{r, warning=FALSE, message=FALSE}
+ggplot(sdr_data, aes(x = goal_4_score, 
+                          y = goal_2_score)) +
+  geom_point() +
+  geom_smooth() +
+  stat_cor() +
+  geom_text(aes(label = country), vjust = -1) +
+  theme_minimal() 
+  ggplotly()
+```
+
+My SDG chosen was quality education sdg 4 and zero hunger sdg 2. As we can see in the map above, as quality education increased, zero hunger also tended to increase, in an example of positive correlation whereas two variables go toward the same direction. My hypothesis is that when developing countries invest in quality education, efforts to end hunger also have to correlate positively because a child cannot learn if he/she is hungry so those would be social programs that would probably have to go hand to hand or a zero hunger program even happening before quality education as zero hunger is the foundation to even be able to learn and develop. 
+
+Sudan and South Sudan in particular seem to demonstrate higher rates of hunger than most along with lower than average rates of zero hunger achievement. We also see the random outliers Niger and Mali with positive rates of zero hunger, but still super low quality education marks, perhaps because girls in those countries don't have access to education, therefore significantly lowering the SDG for quality education
+
+
+```{r, warning=FALSE, message=FALSE}
+ggplot(sdr_data, aes(label = country)(x = goal_4_score, 
+                     y = goal_2_score)) +
+  geom_point() +
+  geom_smooth() +
+  stat_cor() +
+  theme_minimal() 
+
+```
+        
