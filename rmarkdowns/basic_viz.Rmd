@@ -200,8 +200,7 @@ As we can see in the Oceania region, most Countries do not have the necessary da
 Create a new bar chart with countries only from the MENA region. 
 
 ```{r}
-ggplot(lac_sdr_data %>%
-         filter(regions_used_for_the_sdr == "MENA"), aes(x = goal_5_score, y = country)) +
+ggplot(lac_sdr_data, aes(x = goal_5_score, y = country)) +
   geom_bar(stat = "identity")
 ```
 

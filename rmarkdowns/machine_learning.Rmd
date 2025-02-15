@@ -217,7 +217,7 @@ fviz_nbclust(sdr_data_imputed, kmeans, method = "silhouette")
 The kmeans() function clusters countries into groups (int this case 2, visualized above) based on 84 SDG scores
 
 ```{r}
-k2 <- kmeans(sdr_data_imputed, centers = 2)
+k2 <- kmeans(sdr_data_imputed, centers = 3)
 ```
 
 
@@ -246,7 +246,7 @@ To answer this question, we train a random forest model to make predictions of m
 
 
 ```{r}
-rf_matmort <- randomForest(normalized_score_sdg3_matmort ~ .,
+rf_freshwat <- randomForest(normalized_score_sdg6_freshwat ~ .,
                              data = sdr_data_imputed,
                              importance = TRUE)
 ```
@@ -257,14 +257,14 @@ The "% Var explained" value of 80.83 indicates that approximately 80.83% of the 
 
 
 ```{r}
-rf_matmort
+rf_freshwat
 ```
 
 Now we can look at the variables most important in making the predictions
 
 
 ```{r}
-importance_df <- as.data.frame(rf_matmort$importance)
+importance_df <- as.data.frame(rf_freshwat$importance)
 ```
 
 Let's take the top 10 and graph them
@@ -296,7 +296,7 @@ Lastly, we want to know how these important variables influence the prediction: 
 
 
 ```{r}
-pdp::partial(rf_matmort, pred.var = "normalized_score_sdg6_sanita", plot = TRUE)
+pdp::partial(rf_freshwat, pred.var = "normalized_score_sdg6_wastewat", plot = TRUE)
 ```
 
 
@@ -315,7 +315,7 @@ Now that we saw how one variable influences the models prediction, how about 2 v
 
 
 ```{r}
-pd <- pdp::partial(rf_matmort, pred.var = c("normalized_score_sdg6_sanita", "normalized_score_sdg3_u5mort"))
+pd <- pdp::partial(rf_freshwat, pred.var = c("normalized_score_sdg6_wastewat", "normalized_score_sdg3_u5mort"))
 # Default PDP
 plotPartial(pd)
 ```
@@ -334,6 +334,12 @@ plotPartial(pd)
 Edit this code chunk `k2 <- kmeans(sdr_data_imputed, centers = 2)` under the silhouette plot to increase the number of clusters
 
 - Then, run the code chunk `fviz_cluster(k2, data = sdr_data_imputed) + theme_minimal()` to see the new visualization with the increased number of clusters
+
+Hypothesis:
+More developed countries are in cluster 2, less developed countries in cluster 1, and in cluster 3 we see African nations in more state of poverty
+
+
+
   
 #### <span style="color: red;">Challenge 2</span>
 

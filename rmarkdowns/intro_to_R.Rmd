@@ -312,6 +312,7 @@ Using the `select()` function, select two new SDG goal scores. Assign it to a va
 ```{r}
 sdg_scores <- sdr_data %>%
   select(goal_12_score, goal_13_score)
+sdg_scores
 ```
 
 
@@ -341,6 +342,7 @@ library(dplyr)
 
 new_region <- sdr_data %>%
   filter(regions_used_for_the_sdr == "OECD")
+new_region
 ```
 
 
