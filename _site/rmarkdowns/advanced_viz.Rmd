@@ -75,7 +75,7 @@ We start with the same exact code and add to it with `+`
 ```{r, message=FALSE, warning=FALSE}
 ggplot(sdr_data, aes(x = goal_4_score, fill=regions_used_for_the_sdr)) +
   geom_histogram() +
-  theme_minimal() +
+  theme_dark() +
   scale_fill_viridis_d() +
   labs(title = "Distributions of SDG 4 Scores",
        x = "SDG 4 Score",
@@ -108,7 +108,7 @@ Interactive visualizations are a really exciting part of data science! Interacti
 goal_4_histogram <- ggplot(sdr_data, aes(x = goal_4_score, fill=regions_used_for_the_sdr)) +
   geom_histogram() +
   theme_minimal() +
-  scale_fill_viridis_d() +
+  scale_fill_viridis_d(option = "magma") +
   labs(title = "Distributions of SDG 4 Scores",
        x = "SDG 4 Score",
        y = "Number of Countries",
@@ -160,7 +160,7 @@ This takes a few fun steps to do
 
 
 ```{r}
-world <- ne_countries(scale = "medium", returnclass = "sf")
+wor1ld <- ne_countries(scale = "medium", returnclass = "sf")
 ```
 
 - Now we have a dataframe named *world* in our environment
@@ -177,7 +177,7 @@ world <- ne_countries(scale = "medium", returnclass = "sf")
 Let's select the three columns we are interested, making the dataframe much smaller 
 
 ```{r}
-world <- world %>% 
+wor1ld <- wor1ld %>% 
   select(name_long, iso_a3, geometry)
 ```
 
@@ -211,7 +211,7 @@ Let's use the `left_join()` function
 
 
 ```{r}
-sdr_data_world_joined <- left_join(sdr_data, world, by = "iso_a3")
+sdr_data_wor1ld_joined <- left_join(sdr_data, wor1ld, by = "iso_a3")
 ```
 
 Nice!
@@ -219,19 +219,19 @@ Nice!
 The next 4 code chunks are slightly technical regarding the class of sdr_data_world_joined. We can check the class with the 'class()' function
 
 ```{r}
-class(sdr_data_world_joined)
+class(sdr_data_wor1ld_joined)
 ```
 
 Right now, sdr_data_world_joined is a dataframe. In order to use the `leaflet` package that generates the map, we need sdr_data_world_joined to be an sf dataframe. sf stands for spatial features. Converting sdr_data_world_joined to class *sf dataframe* is easy with the `st_as_sf()` function and it allows leaflet to interpret the geometry column as something it can map
 
 ```{r}
-sdr_data_world_joined <- st_as_sf(sdr_data_world_joined)
+sdr_data_wor1ld_joined <- st_as_sf(sdr_data_wor1ld_joined)
 ```
 
 Now lets check the class again to make sure sdr_data_world_joined is of class sf dataframe
 
 ```{r}
-class(sdr_data_world_joined)
+class(sdr_data_wor1ld_joined)
 ```
 
 The last step before mapping with leaflet is specifying a coordinate reference system (crs). There are many different coordinate refernece systmes, and here we choose WGS84
@@ -239,7 +239,7 @@ The last step before mapping with leaflet is specifying a coordinate reference s
 - WGS84 stands for World Geodetic System 1984. It's a global standard for measuring locations on Earth's surface. WGS84 defines a coordinate system using longitude and latitude coordinates, where longitude measures east-west position and latitude measures north-south position. This system is widely used in GPS (Global Positioning System) devices, mapping applications, and geographic information systems (GIS) because it provides a consistent and accurate way to represent locations anywhere on Earth.
 
 ```{r}
-sdr_data_world_joined <- st_transform(sdr_data_world_joined, "+proj=longlat +datum=WGS84")
+sdr_data_wor1ld_joined <- st_transform(sdr_data_wor1ld_joined, "+proj=longlat +datum=WGS84")
 ```
 
 Awesome! We're ready to make a map 
@@ -254,12 +254,12 @@ Awesome! We're ready to make a map
 
 ```{r}
 mytext <- paste(
-    "Country: ", sdr_data_world_joined$country,"<br/>", 
-    "Goal 7 Score: ", round(sdr_data_world_joined$goal_7_score, 2), 
+    "Country: ", sdr_data_wor1ld_joined$country,"<br/>", 
+    "Goal 7 Score: ", round(sdr_data_wor1ld_joined$goal_7_score, 2), 
     sep="") %>%
   lapply(htmltools::HTML)
 
-leaflet(sdr_data_world_joined) %>% 
+leaflet(sdr_data_wor1ld_joined) %>% 
   addTiles()  %>% 
   setView( lat=10, lng=0 , zoom=2) %>%
   addPolygons(stroke = FALSE, fillOpacity = 0.5, smoothFactor = 0.5, color = ~colorQuantile("YlOrRd", goal_7_score)(goal_7_score), label = mytext)
@@ -272,6 +272,19 @@ Can you edit the code chunk above that generates the map to:
 - Change the color palette from "YlOrRd" to another palette
   - Hint: [look under the RColorBrewer Palettes here](https://www.datanovia.com/en/blog/top-r-color-palettes-to-know-for-great-data-visualization/)
     
+
+```{r}
+mytext <- paste(
+    "Country: ", sdr_data_wor1ld_joined$country,"<br/>", 
+    "Goal 7 Score: ", round(sdr_data_wor1ld_joined$goal_7_score, 2), 
+    sep="") %>%
+  lapply(htmltools::HTML)
+
+leaflet(sdr_data_wor1ld_joined) %>% 
+  addTiles()  %>% 
+  setView( lat=10, lng=0 , zoom=2) %>%
+  addPolygons(stroke = FALSE, fillOpacity = 0.5, smoothFactor = 0.5, color = ~colorQuantile("PuBu", goal_1_score)(goal_2_score), label = mytext)
+```
 
 
 

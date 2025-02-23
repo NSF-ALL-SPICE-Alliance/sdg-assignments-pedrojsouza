@@ -59,7 +59,7 @@ Use the `clean_names` function from the janitor package to clean up the column n
 
 ```{r}
 sdr_data <- sdr_data %>% 
-  clean_names() 
+  clean_names()
 ```
 
 #### `ggplot()`
@@ -131,13 +131,14 @@ Cool! It seems that the darkest blue points (countries with the lowest SDG 5 sco
 #### <span style="color: red;">Challenge 1</span>
 Create a scatterplot using two different SDG scores. Then, color the points by using a third SDG score. In a couple of sentences, describe what you see.
 
-
 ```{r}
-ggplot(data = sdr_data, aes(x = goal_7_score, y = goal_13_score, color = goal_12_score)) +
+ggplot(data = sdr_data, aes(x= goal_1_score, y = goal_2_score, color = goal_10_score)) +
   geom_point()
 ```
 
+Interpretation:
 
+I chose the goal scores 1, 2 and 10, which are no poverty, zero hunger, and reduced inequality. We see in the chart that the combining factors of no poverty, zero hunger and reduced inequality seem to cluster on the top right, in the lighter blue color, meaning that there is some pattern to be seen regarding these three SDG going hand to hand together. However we can also see a lot of random scatter around the chart, meaning that a lot of countries reach somewhat a no hunger status, but continue in poverty. 
 
 ### Bar Chart
 
@@ -198,6 +199,12 @@ As we can see in the Oceania region, most Countries do not have the necessary da
 #### <span style="color: red;">Challenge 2</span>
 Create a new bar chart with countries only from the MENA region. 
 
+```{r}
+ggplot(lac_sdr_data, aes(x = goal_5_score, y = country)) +
+  geom_bar(stat = "identity")
+```
+
+
 ### Histogram
 
 When do we use a **histogram**?
@@ -232,3 +239,18 @@ Countries that fall in the higher end of the Goal 4 spectrum belong to the OECD 
 
 #### <span style="color: red;">Challenge 3</span>
 Make a histogram for a different SDG score. Then, fill by region. In a couple of sentences, describe any interesting trends or what you notice from your new histogram.
+
+```{r}
+ggplot(sdr_data, aes(x = goal_7_score)) +
+  geom_histogram()
+```
+
+Interpretation challenge 3:
+
+I chose the sdg score Affordable and Clean Energy for the visualization. We can see above that a little over half of the countries we have data from sit somewhat lower in the count, with almost a quarter chunck having higher counts for affordable and clean energy, which translates to the conclusion that a little more effort is needed in reaching this goal from a lot of countries
+
+```{r}
+ggplot(sdr_data, aes(x = goal_4_score, fill=regions_used_for_the_sdr)) + 
+  geom_histogram(bins=33, color="black")
+```
+

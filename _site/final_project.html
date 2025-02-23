@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Pedro Souza" />
+
+<meta name="date" content="2025-02-22" />
+
+<title>Final Project</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.10.4/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">SDG Analytics in R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="README.html">Logistics</a>
+</li>
+<li>
+  <a href="rmarkdowns/course_introduction.html">Course Intro</a>
+</li>
+<li>
+  <a href="rmarkdowns/installation_guide.html">Installation Guide</a>
+</li>
+<li>
+  <a href="rmarkdowns/intro_to_R.html">Intro to R</a>
+</li>
+<li>
+  <a href="rmarkdowns/basic_viz.html">Basic Data Viz</a>
+</li>
+<li>
+  <a href="rmarkdowns/advanced_viz.html">Advanced Viz</a>
+</li>
+<li>
+  <a href="rmarkdowns/stats.html">Stats</a>
+</li>
+<li>
+  <a href="rmarkdowns/machine_learning.html">ML</a>
+</li>
+<li>
+  <a href="rmarkdowns/final_project_guide.html">Final Project Guide</a>
+</li>
+<li>
+  <a href="rmarkdowns/troubleshooting.html">Troubleshooting Guide</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Final Project</h1>
+<h4 class="author">Pedro Souza</h4>
+<h4 class="date">2025-02-22</h4>
+
+</div>
+
+
+<p>Load in Packages used in the analysis</p>
+<div id="read-in-data" class="section level3">
+<h3>Read in Data</h3>
+<p>This is SDR 2023 Data</p>
+<ul>
+<li>This from the <a
+href="https://sdgtransformationcenter.org/reports/sustainable-development-report-2024/">sustainability
+development report</a></li>
+</ul>
+<pre class="r"><code>sdr_data &lt;- read_csv(here(&quot;data/SDR-2023-Data.csv&quot;))</code></pre>
+<pre class="r"><code>sdr_data_sids &lt;- read_csv(here(&quot;data/SDR-for-SIDS/SIDS-SDR-2023-data.csv&quot;))</code></pre>
+<p>Clean column names of our dataframe</p>
+<pre class="r"><code>sdr_data_sids &lt;- sdr_data_sids %&gt;%
+  clean_names()</code></pre>
+<pre class="r"><code>brazil_data &lt;- read_csv(&quot;~/Downloads/BRAZIL_CITIES.csv&quot;)</code></pre>
+<pre><code>## Warning: One or more parsing issues, call `problems()` on your data frame for details,
+## e.g.:
+##   dat &lt;- vroom(...)
+##   problems(dat)</code></pre>
+<pre><code>## Rows: 5573 Columns: 1
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (1): CITY;STATE;CAPITAL;IBGE_RES_POP;IBGE_RES_POP_BRAS;IBGE_RES_POP_ESTR...
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>brazil_data &lt;- read_csv(&quot;~/desktop/event_data_bra.csv&quot;)</code></pre>
+<pre><code>## Rows: 96 Columns: 36
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (30): country, iso3, latitude, longitude, centroid, role, displacement_t...
+## dbl  (2): id, event_id
+## lgl  (4): event_codes, event_code_types, old_id, displacement_occurred
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>weather_data &lt;- read.csv(&quot;~/Downloads/weather_2000.csv&quot;, stringsAsFactors = FALSE)</code></pre>
+<pre class="r"><code>weather_data$DATA &lt;- as.Date(weather_data$DATA..YYYY.MM.DD.)
+precipitation_data &lt;- aggregate(weather_data$PRECIPITAÇÃO.TOTAL..HORÁRIO..mm.,
+                                by = list(Date = weather_data$DATA), sum, na.rm = TRUE)</code></pre>
+</div>
+<div id="intro" class="section level3">
+<h3>Intro</h3>
+<p>Brazil is the largest country in South America. It has about 8.5
+million square kilometers, bigger than continental USA. It sits number
+52 in the ranking with the sustainable development report with a 73.8
+overall score. With a population of about 220 million people, Brazil is
+relatively free of major natural disasters like tsunamis, volcanoes and
+earthquakes, however its massive geography makes different regions
+vulnerable to drought, flood and different weather pattern
+displacements. In the graphs below I’ll give details on different
+weather events and displacements with data pulled from <a
+href="https://data.humdata.org/dataset/idmc-event-data-for-bra">this
+website</a></p>
+<pre class="r"><code>ggplot(precipitation_data, aes(x = Date, y = x)) +
+  geom_bar(stat = &quot;identity&quot;, fill = &quot;lightblue&quot;) +
+  labs(title = &quot;Total Precipitation by Day&quot;, x = &quot;Date&quot;, y = &quot;Precipitation (mm)&quot;) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))</code></pre>
+<p><img src="final_project_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>Above you can see a graph showing the amount of precipitation in
+Brazil during the year. Per this data it can be assumed that summers in
+South America rains the most.</p>
+<pre class="r"><code>humidity_data &lt;- aggregate(weather_data$UMIDADE.RELATIVA.DO.AR..HORARIA....,
+                           by = list(Date = weather_data$DATA), max, na.rm = TRUE)</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): no non-missing arguments to max; returning -Inf
+## Warning in FUN(X[[i]], ...): no non-missing arguments to max; returning -Inf</code></pre>
+<pre class="r"><code>wind_gust_data &lt;- aggregate(weather_data$VENTO..RAJADA.MAXIMA..m.s.,
+                            by = list(Date = weather_data$DATA), max, na.rm = TRUE)</code></pre>
+<pre><code>## Warning in FUN(X[[i]], ...): no non-missing arguments to max; returning -Inf
+## Warning in FUN(X[[i]], ...): no non-missing arguments to max; returning -Inf</code></pre>
+<pre class="r"><code>ggplot(wind_gust_data, aes(x = Date, y = x)) +
+  geom_bar(stat = &quot;identity&quot;, fill = &quot;darkorange&quot;) +
+  labs(title = &quot;Maximum Wind Gust by Day&quot;, x = &quot;Date&quot;, y = &quot;Wind Gust (m/s)&quot;) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))</code></pre>
+<pre><code>## Warning: Removed 2 rows containing missing values or values outside the scale range
+## (`geom_bar()`).</code></pre>
+<p><img src="final_project_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>In the graph above we can see a measurement of wind gusts per
+different days of the year in Brazil. Brazilian falls and winters tend
+to have days with highter windgusts than spring and summer days.</p>
+<pre class="r"><code>event_data &lt;- read.csv(&quot;~/desktop/event_data_bra.csv&quot;)</code></pre>
+<pre class="r"><code>ggplot(event_data, aes(x = displacement_type)) +
+  geom_bar(fill = &quot;lightblue&quot;) +
+  labs(title = &quot;Displacement Type Counts&quot;, x = &quot;Displacement Type&quot;, y = &quot;Count&quot;) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
+<p><img src="final_project_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p>This graph highlights disasters as solely one of the greatestn
+sources of internal displacements inside of Brazil.</p>
+<pre class="r"><code>ggplot(event_data, aes(x = combined_type)) +
+  geom_bar(fill = &quot;purple&quot;) +
+  labs(title = &quot;Displacements by Event Type&quot;, x = &quot;Event Type&quot;, y = &quot;Count&quot;) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
+<p><img src="final_project_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>The events that causes disruptions and displacements, shown in a bar
+graph. Flood and storm shown in higher numbers, with wildfire and
+droughts coming in second and third places.</p>
+<pre class="r"><code>event_data$region &lt;- sub(&quot;.*, (.*) Region,.*&quot;, &quot;\\1&quot;, event_data$locations_name)</code></pre>
+<pre class="r"><code>ggplot(event_data, aes(x = region)) +
+  geom_bar(fill = &quot;forestgreen&quot;) +
+  labs(title = &quot;Displacements by Region&quot;, x = &quot;Region&quot;, y = &quot;Count&quot;)</code></pre>
+<p><img src="final_project_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>Bar graph shows which regions of Brazil suffers the most
+displacement. Southeast and North Brazil lead in numbers. Northeast show
+low numbers because it is historically a much drier, sub-humid climate,
+with major droughts throughout years and generally wet winters, hence
+why relatively low in the graph.</p>
+<pre class="r"><code>ggplot(event_data, aes(x = combined_type, y = figure, fill = combined_type)) +
+  geom_boxplot() +
+  labs(title = &quot;Box Plot of Displacement Figures by Event Type&quot;,
+       x = &quot;Event Type&quot;, y = &quot;Displacement Figures&quot;) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
+<p><img src="final_project_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>A more detailed box plot to visualize displacement figures and the
+event causes.</p>
+<pre class="r"><code>ggplot(event_data, aes(x = created_at, y = figure, group = 1)) +
+  geom_line(color = &quot;darkgreen&quot;) +
+  labs(title = &quot;Line Plot of Displacements Over Time&quot;,
+       x = &quot;Date&quot;, y = &quot;Displacements&quot;)</code></pre>
+<p><img src="final_project_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p>Line plot showing displacement numbers over time in the country of
+Brazil.</p>
+<pre class="r"><code>event_data$region &lt;- sub(&quot;.*, (.*) Region,.*&quot;, &quot;\\1&quot;, event_data$locations_name)</code></pre>
+<pre class="r"><code>plot_ly(data = event_data, 
+        x = ~latitude, 
+        y = ~figure, 
+        type = &#39;scatter&#39;, 
+        mode = &#39;markers&#39;, 
+        color = ~displacement_type,
+        text = ~paste(&quot;Location:&quot;, locations_name, &quot;&lt;br&gt;Event Type:&quot;, combined_type)) %&gt;%
+  layout(title = &quot;Interactive Scatter Plot of Displacements vs. Latitude&quot;,
+         xaxis = list(title = &quot;Latitude&quot;),
+         yaxis = list(title = &quot;Displacements&quot;))</code></pre>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-5f01393a044683b5edbb" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-5f01393a044683b5edbb">{"x":{"visdat":{"c84f43c7ed0b":["function () ","plotlyVisDat"]},"cur_data":"c84f43c7ed0b","attrs":{"c84f43c7ed0b":{"x":{},"y":{},"mode":"markers","text":{},"color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Interactive Scatter Plot of Displacements vs. Latitude","xaxis":{"domain":[0,1],"automargin":true,"title":"Latitude","type":"category","categoryorder":"array","categoryarray":["-10.83267","-12.69299","-13.4464","-15.94817","-18.577129","-19.67791","-20.62137","-22.222059","-22.276421","-22.632681","-24.61854","-27.689091","-3.62418","-3.78374","-30.47603","-5.2171","-5.84564","-6.75213","-8.37503","-9.13042","-9.31702","#geo+lat"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Displacements","type":"category","categoryorder":"array","categoryarray":["#affected+displaced","1","10","100","103","11","12","1254","13","1316","14","15","158","1600","161","169","17","18","190","2","20","21","215","23","2418","25","256","2657","270","28","2852","3","30","305","31","32","325","33","3382","354","4","40","44","5","50","508","543","55","572","574","5790","6","60","603","62","65","657","6742","71","75","752","780","8","80","8301","9","90","906","9442","986"]},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["#geo+lat"],"y":["#affected+displaced"],"mode":"markers","text":"Location:  <br>Event Type: #cause","type":"scatter","name":"#event+displacement_type","marker":{"color":"rgba(102,194,165,1)","line":{"color":"rgba(102,194,165,1)"}},"textfont":{"color":"rgba(102,194,165,1)"},"error_y":{"color":"rgba(102,194,165,1)"},"error_x":{"color":"rgba(102,194,165,1)"},"line":{"color":"rgba(102,194,165,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["-22.276421"],"y":["23"],"mode":"markers","text":"Location: Dourados, Dourados, Microrregião de Dourados, Mesorregião Sudoeste de Mato Grosso do Sul, Mato Grosso do Sul, Central-West Region, Brazil <br>Event Type: Conflict","type":"scatter","name":"Conflict","marker":{"color":"rgba(252,141,98,1)","line":{"color":"rgba(252,141,98,1)"}},"textfont":{"color":"rgba(252,141,98,1)"},"error_y":{"color":"rgba(252,141,98,1)"},"error_x":{"color":"rgba(252,141,98,1)"},"line":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["-22.222059","-30.47603","-18.577129","-24.61854","-22.632681","-3.62418","-19.67791","-18.577129","-24.61854","-22.222059","-27.689091","-22.632681","-18.577129","-12.69299","-18.577129","-24.61854","-30.47603","-27.689091","-22.632681","-30.47603","-19.67791","-3.62418","-3.62418","-19.67791","-3.62418","-27.689091","-18.577129","-22.222059","-30.47603","-27.689091","-27.689091","-3.62418","-19.67791","-15.94817","-12.69299","-20.62137","-3.62418","-24.61854","-22.632681","-13.4464","-19.67791","-15.94817","-20.62137","-18.577129","-30.47603","-27.689091","-5.2171","-22.632681","-5.2171","-18.577129","-27.689091","-27.689091","-30.47603","-24.61854","-3.62418","-18.577129","-12.69299","-15.94817","-9.13042","-3.78374","-24.61854","-3.62418","-3.78374","-22.222059","-3.78374","-3.78374","-19.67791","-18.577129","-12.69299","-3.62418","-22.222059","-9.31702","-5.84564","-3.78374","-3.62418","-3.62418","-8.37503","-20.62137","-9.13042","-3.78374","-18.577129","-20.62137","-24.61854","-30.47603","-3.78374","-22.632681","-10.83267","-18.577129","-3.62418","-6.75213","-3.78374","-20.62137","-19.67791","-3.78374"],"y":["31","10","256","5","30","20","12","50","158","12","8","986","572","28","3382","2","2418","12","603","20","2","305","90","4","65","3","103","55","2657","60","354","1316","1","15","4","14","2","270","8","71","8","20","4","161","752","44","11","6","15","80","17","9","574","3","15","169","1","6","3","6742","20","2852","21","10","215","33","62","25","4","9442","40","2","28","8301","1254","10","100","40","32","657","13","8","543","325","780","906","508","3","75","190","5790","18","8","1600"],"mode":"markers","text":["Location: Rio de Janeiro, Southeast Region, Brazil <br>Event Type: Storm","Location: Rio Grande do Sul, South Region, Brazil <br>Event Type: Storm","Location: Minas Gerais, Southeast Region, Brazil <br>Event Type: Mass Movement","Location: Paraná, South Region, Brazil <br>Event Type: Mass Movement","Location: São Paulo, Southeast Region, Brazil <br>Event Type: Mass Movement","Location: Pará, North Region, Brazil <br>Event Type: Erosion","Location: Espírito Santo, Southeast Region, Brazil <br>Event Type: Flood","Location: Minas Gerais, Southeast Region, Brazil <br>Event Type: Flood","Location: Paraná, South Region, Brazil <br>Event Type: Flood","Location: Rio de Janeiro, Southeast Region, Brazil <br>Event Type: Flood","Location: Santa Catarina, South Region, Brazil <br>Event Type: Flood","Location: São Paulo, Southeast Region, Brazil <br>Event Type: Flood","Location: Minas Gerais, Southeast Region, Brazil <br>Event Type: Storm","Location: Mato Grosso, Central-West Region, Brazil <br>Event Type: Storm","Location: Minas Gerais, Southeast Region, Brazil <br>Event Type: Storm","Location: Paraná, South Region, Brazil <br>Event Type: Storm","Location: Rio Grande do Sul, South Region, Brazil <br>Event Type: Storm","Location: Santa Catarina, South Region, Brazil <br>Event Type: Storm","Location: São Paulo, Southeast Region, Brazil <br>Event Type: Storm","Location: Rio Grande do Sul, South Region, Brazil <br>Event Type: Storm","Location: Espírito Santo, Southeast Region, Brazil <br>Event Type: Mass Movement","Location: Pará, North Region, Brazil <br>Event Type: Wildfire","Location: Pará, North Region, Brazil <br>Event Type: Drought","Location: Espírito Santo, Southeast Region, Brazil <br>Event Type: Mass Movement","Location: Pará, North Region, Brazil <br>Event Type: Storm","Location: Santa Catarina, South Region, Brazil <br>Event Type: Storm","Location: Minas Gerais, Southeast Region, Brazil <br>Event Type: Storm","Location: Rio de Janeiro, Southeast Region, Brazil <br>Event Type: Storm","Location: Rio Grande do Sul, South Region, Brazil <br>Event Type: Storm","Location: Santa Catarina, South Region, Brazil <br>Event Type: Storm","Location: Santa Catarina, South Region, Brazil <br>Event Type: Flood","Location: Pará, North Region, Brazil <br>Event Type: Drought","Location: Espírito Santo, Southeast Region, Brazil <br>Event Type: Flood","Location: Goiás, Central-West Region, Brazil <br>Event Type: Flood","Location: Mato Grosso, Central-West Region, Brazil <br>Event Type: Flood","Location: Mato Grosso do Sul, Central-West Region, Brazil <br>Event Type: Flood","Location: Pará, North Region, Brazil <br>Event Type: Flood","Location: Paraná, South Region, Brazil <br>Event Type: Flood","Location: São Paulo, Southeast Region, Brazil <br>Event Type: Flood","Location: Bahia, Northeast Region, Brazil <br>Event Type: Storm","Location: Espírito Santo, Southeast Region, Brazil <br>Event Type: Storm","Location: Goiás, Central-West Region, Brazil <br>Event Type: Storm","Location: Mato Grosso do Sul, Central-West Region, Brazil <br>Event Type: Storm","Location: Minas Gerais, Southeast Region, Brazil <br>Event Type: Storm","Location: Rio Grande do Sul, South Region, Brazil <br>Event Type: Storm","Location: Santa Catarina, South Region, Brazil <br>Event Type: Storm","Location: Ceará, Northeast Region, Brazil <br>Event Type: Wildfire","Location: São Paulo, Southeast Region, Brazil <br>Event Type: Storm","Location: Ceará, Northeast Region, Brazil <br>Event Type: Wildfire","Location: Minas Gerais, Southeast Region, Brazil <br>Event Type: Storm","Location: Santa Catarina, South Region, Brazil <br>Event Type: Storm","Location: Santa Catarina, South Region, Brazil <br>Event Type: Flood","Location: Rio Grande do Sul, South Region, Brazil <br>Event Type: Storm","Location: Paraná, South Region, Brazil <br>Event Type: Storm","Location: Pará, North Region, Brazil <br>Event Type: Storm","Location: Minas Gerais, Southeast Region, Brazil <br>Event Type: Storm","Location: Mato Grosso, Central-West Region, Brazil <br>Event Type: Storm","Location: Goiás, Central-West Region, Brazil <br>Event Type: Storm","Location: Acre, North Region, Brazil <br>Event Type: Storm","Location: Amazonas, North Region, Brazil <br>Event Type: Drought","Location: Paraná, South Region, Brazil <br>Event Type: Storm","Location: Pará, North Region, Brazil <br>Event Type: Drought","Location: Amazonas, North Region, Brazil <br>Event Type: Mass Movement","Location: Rio de Janeiro, Southeast Region, Brazil <br>Event Type: Mass Movement","Location: Amazonas, North Region, Brazil <br>Event Type: Erosion","Location: Amazonas, North Region, Brazil <br>Event Type: Wildfire","Location: Espírito Santo, Southeast Region, Brazil <br>Event Type: Wildfire","Location: Minas Gerais, Southeast Region, Brazil <br>Event Type: Wildfire","Location: Mato Grosso, Central-West Region, Brazil <br>Event Type: Wildfire","Location: Pará, North Region, Brazil <br>Event Type: Wildfire","Location: Rio de Janeiro, Southeast Region, Brazil <br>Event Type: Wildfire","Location: Tocantins, North Region, Brazil <br>Event Type: Wildfire","Location: Rio Grande do Norte, Northeast Region, Brazil <br>Event Type: Storm","Location: Amazonas, North Region, Brazil <br>Event Type: Drought","Location: Pará, North Region, Brazil <br>Event Type: Drought","Location: Pará, North Region, Brazil <br>Event Type: Erosion","Location: Pernambuco, Northeast Region, Brazil <br>Event Type: Erosion","Location: Mato Grosso do Sul, Central-West Region, Brazil <br>Event Type: Storm","Location: Acre, North Region, Brazil <br>Event Type: Storm","Location: Amazonas, North Region, Brazil <br>Event Type: Storm","Location: Minas Gerais, Southeast Region, Brazil <br>Event Type: Storm","Location: Mato Grosso do Sul, Central-West Region, Brazil <br>Event Type: Storm","Location: Paraná, South Region, Brazil <br>Event Type: Storm","Location: Rio Grande do Sul, South Region, Brazil <br>Event Type: Storm","Location: Amazonas, North Region, Brazil <br>Event Type: Drought","Location: São Paulo, Southeast Region, Brazil <br>Event Type: Wildfire","Location: Rondônia, North Region, Brazil <br>Event Type: Wildfire","Location: Minas Gerais, Southeast Region, Brazil <br>Event Type: Wildfire","Location: Pará, North Region, Brazil <br>Event Type: Storm","Location: Piauí, Northeast Region, Brazil <br>Event Type: Drought","Location: Amazonas, North Region, Brazil <br>Event Type: Drought","Location: Mato Grosso do Sul, Central-West Region, Brazil <br>Event Type: Flood","Location: Espírito Santo, Southeast Region, Brazil <br>Event Type: Storm","Location: Amazonas, North Region, Brazil <br>Event Type: Drought"],"type":"scatter","name":"Disaster","marker":{"color":"rgba(141,160,203,1)","line":{"color":"rgba(141,160,203,1)"}},"textfont":{"color":"rgba(141,160,203,1)"},"error_y":{"color":"rgba(141,160,203,1)"},"error_x":{"color":"rgba(141,160,203,1)"},"line":{"color":"rgba(141,160,203,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p>Bonus: Fun-little interactive map showing the type of displacement
+event, the number of events and the latitude associated with it. Like
+shown in different data graphs, most latitude numbers sit in the
+southeast and north region of the country.</p>
+<pre class="r"><code>plot_ly(data = event_data, 
+        x = ~combined_type, 
+        y = ~figure, 
+        type = &#39;box&#39;, 
+        color = ~combined_type) %&gt;%
+  layout(title = &quot;Interactive Box Plot of Displacements by Event Type&quot;,
+         xaxis = list(title = &quot;Event Type&quot;),
+         yaxis = list(title = &quot;Displacement Figures&quot;))</code></pre>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-b5f6c132f366d5cce667" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-b5f6c132f366d5cce667">{"x":{"visdat":{"c84fdcf8778":["function () ","plotlyVisDat"]},"cur_data":"c84fdcf8778","attrs":{"c84fdcf8778":{"x":{},"y":{},"color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"box"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Interactive Box Plot of Displacements by Event Type","xaxis":{"domain":[0,1],"automargin":true,"title":"Event Type","type":"category","categoryorder":"array","categoryarray":["#cause","Conflict","Drought","Erosion","Flood","Mass Movement","Storm","Wildfire"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"Displacement Figures","type":"category","categoryorder":"array","categoryarray":["#affected+displaced","1","10","100","103","11","12","1254","13","1316","14","15","158","1600","161","169","17","18","190","2","20","21","215","23","2418","25","256","2657","270","28","2852","3","30","305","31","32","325","33","3382","354","4","40","44","5","50","508","543","55","572","574","5790","6","60","603","62","65","657","6742","71","75","752","780","8","80","8301","9","90","906","9442","986"]},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"fillcolor":"rgba(102,194,165,0.5)","x":["#cause"],"y":["#affected+displaced"],"type":"box","name":"#cause","marker":{"color":"rgba(102,194,165,1)","line":{"color":"rgba(102,194,165,1)"}},"line":{"color":"rgba(102,194,165,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(252,141,98,0.5)","x":["Conflict"],"y":["23"],"type":"box","name":"Conflict","marker":{"color":"rgba(252,141,98,1)","line":{"color":"rgba(252,141,98,1)"}},"line":{"color":"rgba(252,141,98,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(141,160,203,0.5)","x":["Drought","Drought","Drought","Drought","Drought","Drought","Drought","Drought","Drought","Drought"],"y":["90","1316","6742","2852","8301","1254","780","190","5790","1600"],"type":"box","name":"Drought","marker":{"color":"rgba(141,160,203,1)","line":{"color":"rgba(141,160,203,1)"}},"line":{"color":"rgba(141,160,203,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(231,138,195,0.5)","x":["Erosion","Erosion","Erosion","Erosion"],"y":["20","215","10","100"],"type":"box","name":"Erosion","marker":{"color":"rgba(231,138,195,1)","line":{"color":"rgba(231,138,195,1)"}},"line":{"color":"rgba(231,138,195,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(166,216,84,0.5)","x":["Flood","Flood","Flood","Flood","Flood","Flood","Flood","Flood","Flood","Flood","Flood","Flood","Flood","Flood","Flood","Flood"],"y":["12","50","158","12","8","986","354","1","15","4","14","2","270","8","9","18"],"type":"box","name":"Flood","marker":{"color":"rgba(166,216,84,1)","line":{"color":"rgba(166,216,84,1)"}},"line":{"color":"rgba(166,216,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(255,217,47,0.5)","x":["Mass Movement","Mass Movement","Mass Movement","Mass Movement","Mass Movement","Mass Movement","Mass Movement"],"y":["256","5","30","2","4","21","10"],"type":"box","name":"Mass Movement","marker":{"color":"rgba(255,217,47,1)","line":{"color":"rgba(255,217,47,1)"}},"line":{"color":"rgba(255,217,47,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(229,196,148,0.5)","x":["Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm","Storm"],"y":["31","10","572","28","3382","2","2418","12","603","20","65","3","103","55","2657","60","71","8","20","4","161","752","44","6","80","17","574","3","15","169","1","6","3","20","28","40","32","657","13","8","543","325","75","8"],"type":"box","name":"Storm","marker":{"color":"rgba(229,196,148,1)","line":{"color":"rgba(229,196,148,1)"}},"line":{"color":"rgba(229,196,148,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(179,179,179,0.5)","x":["Wildfire","Wildfire","Wildfire","Wildfire","Wildfire","Wildfire","Wildfire","Wildfire","Wildfire","Wildfire","Wildfire","Wildfire","Wildfire"],"y":["305","11","15","33","62","25","4","9442","40","2","906","508","3"],"type":"box","name":"Wildfire","marker":{"color":"rgba(179,179,179,1)","line":{"color":"rgba(179,179,179,1)"}},"line":{"color":"rgba(179,179,179,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<p>Bonus: One more interactive box plot with the displacement figures
+and disaster causes. If you hover over each color there will be more
+detailed displayed for each event type.</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
