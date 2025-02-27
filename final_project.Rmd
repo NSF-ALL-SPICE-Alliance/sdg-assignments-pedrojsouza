@@ -26,69 +26,40 @@ This is SDR 2023 Data
 
 - This from the [sustainability development report](https://sdgtransformationcenter.org/reports/sustainable-development-report-2024/)
 
-```{r, message=FALSE}
-sdr_data <- read_csv(here("data/SDR-2023-Data.csv"))
-```
 
 ```{r, message=FALSE}
-sdr_data_sids <- read_csv(here("data/SDR-for-SIDS/SIDS-SDR-2023-data.csv"))
+weather_data <- read_csv(here("data/weather_2000.csv"))
 ```
-
-Clean column names of our dataframe
 
 ```{r}
-sdr_data_sids <- sdr_data_sids %>%
+weather_data <- weather_data %>% 
   clean_names()
 ```
 
-
 ```{r}
-brazil_data <- read_csv("~/Downloads/BRAZIL_CITIES.csv")
-```
-
-
-```{r}
-brazil_data <- read_csv("~/desktop/event_data_bra.csv")
-```
-
-```{r}
-weather_data <- read.csv("~/Downloads/weather_2000.csv", stringsAsFactors = FALSE)
-```
-
-
-```{r}
-weather_data$DATA <- as.Date(weather_data$DATA..YYYY.MM.DD.)
-precipitation_data <- aggregate(weather_data$PRECIPITAÇÃO.TOTAL..HORÁRIO..mm.,
-                                by = list(Date = weather_data$DATA), sum, na.rm = TRUE)
+brazil_data <- read_csv(here("data/event_data_bra.csv"))
 ```
 
 ### Intro 
 
 Brazil is the largest country in South America. It has about 8.5 million square kilometers, bigger than continental USA. It sits number 52 in the ranking with the sustainable development report with a 73.8 overall score. With a population of about 220 million people, Brazil is relatively free of major natural disasters like tsunamis, volcanoes and earthquakes, however its massive geography makes different regions vulnerable to drought, flood and different weather pattern displacements. In the graphs below I'll give details on different weather events and displacements with data pulled from [this website](https://data.humdata.org/dataset/idmc-event-data-for-bra)
 
+```{r}
+glimpse(weather_data)
+```
 
 ```{r}
-ggplot(precipitation_data, aes(x = Date, y = x)) +
-  geom_bar(stat = "identity", fill = "lightblue") +
-  labs(title = "Total Precipitation by Day", x = "Date", y = "Precipitation (mm)") +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+ ggplot(weather_data, aes(x = data_yyyy_mm_dd, y = precipitacao_total_horario_mm)) +
+   geom_bar(stat = "identity", fill = "lightblue") +
+   labs(title = "Total Precipitation by Day", x = "Date", y = "Precipitation (mm)") +
+   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
 Above you can see a graph showing the amount of precipitation in Brazil during the year. Per this data it can be assumed that summers in South America rains the most. 
 
-```{r}
-humidity_data <- aggregate(weather_data$UMIDADE.RELATIVA.DO.AR..HORARIA....,
-                           by = list(Date = weather_data$DATA), max, na.rm = TRUE)
-```
-
 
 ```{r}
-wind_gust_data <- aggregate(weather_data$VENTO..RAJADA.MAXIMA..m.s.,
-                            by = list(Date = weather_data$DATA), max, na.rm = TRUE)
-```
-
-```{r}
-ggplot(wind_gust_data, aes(x = Date, y = x)) +
+ggplot(weather_data, aes(x = data_yyyy_mm_dd, y = vento_rajada_maxima_m_s)) +
   geom_bar(stat = "identity", fill = "darkorange") +
   labs(title = "Maximum Wind Gust by Day", x = "Date", y = "Wind Gust (m/s)") +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
@@ -97,12 +68,7 @@ ggplot(wind_gust_data, aes(x = Date, y = x)) +
 In the graph above we can see a measurement of wind gusts per different days of the year in Brazil. Brazilian falls and winters tend to have days with highter windgusts than spring and summer days. 
 
 ```{r}
-event_data <- read.csv("~/desktop/event_data_bra.csv")
-```
-
-
-```{r}
-ggplot(event_data, aes(x = displacement_type)) +
+ggplot(brazil_data, aes(x = displacement_type)) +
   geom_bar(fill = "lightblue") +
   labs(title = "Displacement Type Counts", x = "Displacement Type", y = "Count") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
@@ -112,7 +78,7 @@ This graph highlights disasters as solely one of the greatestn sources of intern
 
 
 ```{r}
-ggplot(event_data, aes(x = combined_type)) +
+ggplot(brazil_data, aes(x = combined_type)) +
   geom_bar(fill = "purple") +
   labs(title = "Displacements by Event Type", x = "Event Type", y = "Count") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
@@ -120,22 +86,27 @@ ggplot(event_data, aes(x = combined_type)) +
 
 The events that causes disruptions and displacements, shown in a bar graph. Flood and storm shown in higher numbers, with wildfire and droughts coming in second and third places.
 
-
 ```{r}
-event_data$region <- sub(".*, (.*) Region,.*", "\\1", event_data$locations_name)
+brazil_data <- brazil_data %>%
+  mutate(region = str_extract(locations_name, "(?<=, ).*?(?=, )"))
 ```
 
+
+
 ```{r}
-ggplot(event_data, aes(x = region)) +
+ggplot(brazil_data, aes(x = region)) +
   geom_bar(fill = "forestgreen") +
   labs(title = "Displacements by Region", x = "Region", y = "Count")
 ```
 
 Bar graph shows which regions of Brazil suffers the most displacement. Southeast and North Brazil lead in numbers. Northeast show low numbers because it is historically a much drier, sub-humid climate, with major droughts throughout years and generally wet winters, hence why relatively low in the graph. 
 
+```{r}
+brazil_data$figure <- as.numeric(brazil_data$figure)
+```
 
 ```{r}
-ggplot(event_data, aes(x = combined_type, y = figure, fill = combined_type)) +
+ggplot(brazil_data, aes(x = combined_type, y = figure, fill = combined_type)) +
   geom_boxplot() +
   labs(title = "Box Plot of Displacement Figures by Event Type",
        x = "Event Type", y = "Displacement Figures") +
@@ -146,7 +117,7 @@ A more detailed box plot to visualize displacement figures and the event causes.
 
 
 ```{r}
-ggplot(event_data, aes(x = created_at, y = figure, group = 1)) +
+ggplot(brazil_data, aes(x = displacement_date, y = as.numeric(figure), color=type)) +
   geom_line(color = "darkgreen") +
   labs(title = "Line Plot of Displacements Over Time",
        x = "Date", y = "Displacements")
@@ -156,11 +127,7 @@ Line plot showing displacement numbers over time in the country of Brazil.
 
 
 ```{r}
-event_data$region <- sub(".*, (.*) Region,.*", "\\1", event_data$locations_name)
-```
-
-```{r}
-plot_ly(data = event_data, 
+plot_ly(data = brazil_data, 
         x = ~latitude, 
         y = ~figure, 
         type = 'scatter', 
@@ -175,7 +142,7 @@ plot_ly(data = event_data,
 Bonus: Fun-little interactive map showing the type of displacement event, the number of events and the latitude associated with it. Like shown in different data graphs, most latitude numbers sit in the southeast and north region of the country.
 
 ```{r}
-plot_ly(data = event_data, 
+plot_ly(data = brazil_data, 
         x = ~combined_type, 
         y = ~figure, 
         type = 'box', 
